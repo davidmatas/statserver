@@ -27,9 +27,9 @@
   with_items:
     - psycopg2
     - django<1.7
-    - django-tagging 
-    - python-memcached 
-    - pytz 
+    - django-tagging
+    - python-memcached
+    - pytz
     - pyparsing
     - gunicorn
     - twisted
@@ -83,6 +83,12 @@
 - name: syncdb for graphite
   shell: export PYTHONPATH=/opt/graphite/webapp/; /opt/graphite/bin/python /opt/graphite/bin/django-admin.py syncdb --noinput --settings=graphite.settings
 
+- name: collect statics for admin
+  shell: export PYTHONPATH=/opt/graphite/webapp/; /opt/graphite/bin/python /opt/graphite/bin/django-admin.py collectstatic --noinput --settings=graphite.settings
+
+- name: move admin statics to content
+  shell: mv /opt/graphite/static/admin /opt/graphite/webapp/content/
+
 - name: graphite log folder
   file: state=directory path=/opt/graphite/storage/log/webapp
 
@@ -90,7 +96,7 @@
 
 - name: Copy supervisor configuration for graphite
   template: src=supervisor-graphite.conf.j2 dest=/etc/supervisor/conf.d/graphite.conf
-  notify: 
+  notify:
     - reload supervisor
 
 # NGinx
