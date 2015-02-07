@@ -38,5 +38,4 @@
     - graphite
     - nodejs
     - statsd
-    - sentry
 
