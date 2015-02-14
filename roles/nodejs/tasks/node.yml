@@ -16,3 +16,6 @@
 
 - name: make install
   shell: /usr/bin/make install chdir=/tmp/{{ node_dir.stdout }}
+
+- name: install phantomas
+  npm: name=phantomas global=yes
